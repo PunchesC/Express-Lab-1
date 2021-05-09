@@ -12,7 +12,8 @@ let nextID: number = 5;
 routes.get('/cart-items', (req, res) => {
   let maxPrice: number = parseInt(req.query.maxPrice as string);
   let prefix: string = req.query.prefix as string;
-  let pageSize: number =parseInt(req.query.pageSize as string)
+  let pageSize: number =parseInt(req.query.pageSize as string);
+
   let result = inventory;
 if(maxPrice){
   result = result.filter(food => food.price >=maxPrice)
@@ -21,8 +22,14 @@ if(prefix){
   result = result.filter(food => food.product.startsWith(prefix));
 }
 if(pageSize){
-
-result =result.filter(food => Number(food.id) <=pageSize)
+  for (let i=0; i<result.length; i++){
+    if(Number(result[i])!<=pageSize){
+      res.json(result);
+    } else{
+      break;
+    }
+  }
+// result =result.filter(food => Number(food.id) <=pageSize)
 }
 
 
